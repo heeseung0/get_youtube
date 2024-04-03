@@ -5,9 +5,14 @@ import 'package:get_youtube/repository/youtube_repository.dart';
 
 import '../const/api.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,12 +46,16 @@ class HomeScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          return ListView(
-            // 아래로 당겨서 스크롤할 때 튕기는 애니메이션 추가
-            physics: const BouncingScrollPhysics(),
-            children: snapshot.data!
-                .map((e) => CustomYoutubePlayer(videoModel: e))
-                .toList(),
+          return RefreshIndicator(
+            onRefresh: () async {
+              setState(() {});
+            },
+            child: ListView(
+              physics: BouncingScrollPhysics(),
+              children: snapshot.data!
+                  .map((e) => CustomYoutubePlayer(videoModel: e))
+                  .toList(),
+            ),
           );
         },
       ),
