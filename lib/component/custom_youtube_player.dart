@@ -42,13 +42,26 @@ class _CustomYoutubePlayerState extends State<CustomYoutubePlayer> {
         const SizedBox(height: 16.0),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text(
-            widget.videoModel.title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16.0,
-              fontWeight: FontWeight.w700,
-            ),
+          child: Column(
+            children: [
+              Text(
+                widget.videoModel.title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              Text(
+                '조회수 : ${widget.videoModel.viewCount}',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 16.0),

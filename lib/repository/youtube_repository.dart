@@ -25,16 +25,47 @@ class YoutubeRepository {
           item?['id']?['videoId'] != null && item?['snippet']?['title'] != null,
     );
 
-/*
+    //이하 view count
+    final List listData = resp.data['items']
+        .where((item) =>
+            item?['id']?['videoId'] != null &&
+            item?['snippet']?['title'] != null)
+        .toList();
+
+    final List<String> videoIdList = [];
+
+    listData.forEach((element) {
+      videoIdList.add(element['id']['videoId']);
+    });
+
     final statisticsList = await Dio()
         .get('$YOUTUBE_API_BASE_URL_VIDEO?key=$API_KEY', queryParameters: {
       'part': 'statistics',
-      'id': '',
+      'id': videoIdList,
     });
 
-    //print('구조?');
-    //print(listWithData.list((item) => item['id']['videoId']));
-*/
+    List<VideoModel> vmList = [];
+
+    final List listStatisticsData = statisticsList.data['items']
+        .where((item) =>
+            item?['id'] != null && item?['statistics']?['viewCount'] != null)
+        .toList();
+
+    listData.forEach((snp) {
+      listStatisticsData.forEach((sts) {
+        if (sts['id'] == snp['id']['videoId']) {
+          vmList.add(VideoModel(
+            id: snp['id']['videoId'],
+            title: snp['snippet']['title'],
+            viewCount: sts['statistics']['viewCount'],
+          ));
+        }
+      });
+    });
+
+    return vmList;
+    //여기까지
+    /*
     return listWithData
         .map<VideoModel>(
           (item) => VideoModel(
@@ -44,5 +75,6 @@ class YoutubeRepository {
           ),
         )
         .toList();
+     */
   }
 }
